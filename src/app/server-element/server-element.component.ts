@@ -1,4 +1,5 @@
-import { Component,
+import {
+  Component,
   OnInit,
   Input,
   ViewEncapsulation,
@@ -9,7 +10,11 @@ import { Component,
   AfterContentChecked,
   AfterViewInit,
   AfterViewChecked,
-  OnDestroy } from '@angular/core';
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  ContentChild
+} from "@angular/core";
 
 @Component({
   selector: 'app-server-element',
@@ -17,21 +22,16 @@ import { Component,
   styleUrls: ['./server-element.component.css'],
   encapsulation: ViewEncapsulation.None // Emulated, Native
 })
-export class ServerElementComponent implements
-  OnInit,
-  OnChanges,
-  DoCheck,
-  AfterContentInit,
-  AfterContentChecked,
-  AfterViewInit,
-  AfterViewChecked,
-  OnDestroy {
+export class ServerElementComponent implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
 
   // @Input('srvElement') element: {type: string, name: string, content: string};
   @Input() name:  string;
+  @ViewChild('heading') header: ElementRef;
+  @ContentChild('contentParagraph') paragraph: ElementRef
 
   constructor() {
     console.log('constructor called!');
+    //console.log("Header test content: "+this.header.nativeElement.textContent); // Errors out, definitely not accessible at this stage
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -41,6 +41,8 @@ export class ServerElementComponent implements
 
   ngOnInit() {
     console.log('ngOnInit called!');
+    console.log("Header test content: "+this.header.nativeElement.textContent); // empty, as element is not initialised at this time
+    console.log("Content paragraph: "+this.paragraph.nativeElement.textContent); //empty, as element is not initialised at this time
   }
 
   ngDoCheck() {
@@ -49,6 +51,8 @@ export class ServerElementComponent implements
 
   ngAfterContentInit() {
     console.log('ngAfterContentInit called!');
+    console.log("Header test content: "+this.header.nativeElement.textContent); // happens after ng-content initiated
+    console.log("Content paragraph: "+this.paragraph.nativeElement.textContent);
   }
 
   ngAfterContentChecked() {
@@ -57,6 +61,7 @@ export class ServerElementComponent implements
 
   ngAfterViewInit() {
     console.log('ngAfterViewInit called!');
+    console.log("Header test content: "+this.header.nativeElement.textContent); // Here it is accessible at first time
   }
 
   ngAfterViewChecked() {
