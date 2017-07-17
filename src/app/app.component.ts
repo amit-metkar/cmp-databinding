@@ -23,4 +23,12 @@ export class AppComponent {
       content: blueprintData.content
     });
   }
+
+  onChangeFirst() {
+    this.serverElements[0].name = 'Chnaged!';
+  }
+
+  onDestroyFirst() {
+    this.serverElements.splice(0, 1);
+  }
 }
